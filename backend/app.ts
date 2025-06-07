@@ -1,6 +1,5 @@
 import express from 'express';
-import imageRoutes from '/routes/imageRoutes';
-import multer from 'multer';
+import imageRoutes from './routes/imageRoutes';
 import path from 'path';
 import fs from 'fs';
 
@@ -23,3 +22,7 @@ app.use('/cache', express.static(path.join(__dirname, 'cache')));
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+
+
+
+export default app;

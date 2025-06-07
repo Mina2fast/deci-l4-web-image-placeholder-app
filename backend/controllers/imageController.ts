@@ -29,7 +29,8 @@ export const resizeImage = async (req: Request, res: Response) => {
   try {
     await sharp(inputPath).resize(w, h).toFile(outputPath);
     return res.sendFile(outputPath);
-  } catch (err) {
+  } catch {
     return res.status(500).send('Image processing failed');
   }
 };
+export default resizeImage
