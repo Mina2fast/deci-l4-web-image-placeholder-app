@@ -1,44 +1,65 @@
-import { Request, Response } from 'express';
-import { uploadImage, getImagesList } from '../../src/backend/controllers/upload.controller';
-import fs from 'fs';
+// tests/upload.controller.test.ts
+
+import request from 'supertest';
 import path from 'path';
+import fs from 'fs';
+import app from '../../src/backend/server'; 
 
-describe('Upload Controller', () => {
-  let mockRequest: Partial<Request>;
-  let mockResponse: Partial<Response>;
-  let responseObject: any;
+describe('POST /api/images/upload', () => {
+  const imagePath = path.join(__dirname, 'test-image.jpg');
+  const resizedImagePath = path.join(__dirname, '../../public/images/resized/test-image-300x300.jpg');
 
-  beforeEach(() => {
-    mockRequest = {};
-    mockResponse = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockImplementation((result) => {
-        responseObject = result;
-      }),
-    };
+  beforeAll(() => {
+    if (!fs.existsSync(imagePath)) {
+      throw new Error('Test image not found: ' + imagePath);
+    }
   });
 
-  describe('uploadImage', () => {
-    it('should return 400 if no file is uploaded', () => {
-      uploadImage(mockRequest as Request, mockResponse as Response);
-      expect(mockResponse.status).toHaveBeenCalledWith(400);
-      expect(responseObject.error).toBe('No file uploaded');
-    });
-
-    // Additional tests for successful upload would go here
+  afterAll(() => {
+    if (fs.existsSync(resizedImagePath)) {
+      fs.unlinkSync(resizedImagePath);
+    }
   });
 
-  describe('getImagesList', () => {
-    it('should handle directory read error', () => {
-      jest.spyOn(fs, 'readdir').mockImplementation((path, callback) => {
-        callback(new Error('Test error'), []);
-      });
+  it('should upload and resize the image', async () => {
+    const response = await request(app)
+      .post('/api/images/upload')
+      .field('width', '300')
+      .field('height', '300')
+      .attach('image', imagePath);
 
-      getImagesList(mockRequest as Request, mockResponse as Response);
-      expect(mockResponse.status).toHaveBeenCalledWith(500);
-      expect(responseObject.error).toBe('Error reading images directory');
-    });
+    expect(response.status).toBe(200);
 
-    // Additional tests for successful directory listing would go here
+    // ✅ Use this if you're getting `toHaveProperty` errors in Jasmine:
+    expect(response.body.resizedImagePath).toBeDefined();
+
+    const outputPath = path.join(__dirname, '../../public', response.body.resizedImagePath);
+    expect(fs.existsSync(outputPath)).toBe(true);
+  });
+
+  it('should return 400 if no file is uploaded', async () => {
+    const response = await request(app)
+      .post('/api/images/upload')
+      .field('width', '300')
+      .field('height', '300');
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe('No file uploaded');
+  });
+
+  it('should return 400 for invalid file type', async () => {
+    const invalidPath = path.join(__dirname, 'invalid.txt');
+    fs.writeFileSync(invalidPath, 'not an image');
+
+    const response = await request(app)
+      .post('/api/images/upload')
+      .field('width', '300')
+      .field('height', '300')
+      .attach('image', invalidPath);
+
+    expect(response.status).toBe(400);
+    expect(response.body.error).toBe('Only image files are allowed!');
+
+    fs.unlinkSync(invalidPath);
   });
 });

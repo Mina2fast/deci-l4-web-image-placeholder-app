@@ -6,29 +6,46 @@ import fs from 'fs';
 export const validateImageParams = (
   req: Request,
   res: Response,
-  next: NextFunction,
-) => {
+  next: NextFunction
+): void => {
   const { filename, width, height } = req.query;
 
   if (!filename || !width || !height) {
-    return res.status(400).json({
-      error: 'Missing required parameters: filename, width, height',
-    });
+    res.status(400).json({ error: 'Missing required parameters: filename, width, height' });
+    return;
+  }
+
+  if (typeof filename !== 'string') {
+    res.status(400).json({ error: 'Filename must be a string' });
+    return;
   }
 
   const widthNum = parseInt(width as string);
   const heightNum = parseInt(height as string);
 
-  if (isNaN(widthNum) || isNaN(heightNum) || widthNum <= 0 || heightNum <= 0) {
-    return res.status(400).json({
-      error: 'Width and height must be positive numbers',
-    });
+  if (isNaN(widthNum)) {
+    res.status(400).json({ error: 'Width must be a number' });
+    return;
+  }
+
+  if (isNaN(heightNum)) {
+    res.status(400).json({ error: 'Height must be a number' });
+    return;
+  }
+
+  if (widthNum <= 0 || heightNum <= 0) {
+    res.status(400).json({ error: 'Width and height must be positive numbers' });
+    return;
   }
 
   next();
 };
 
-export const processImage = async (req: Request, res: Response) => {
+export const processImage = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const { filename, width, height } = req.query;
     const widthNum = parseInt(width as string);
@@ -37,24 +54,24 @@ export const processImage = async (req: Request, res: Response) => {
     const inputPath = path.join(
       __dirname,
       '../../../frontend/public/images',
-      filename as string,
+      filename as string
     );
     const outputPath = path.join(
       __dirname,
       '../../../frontend/public/thumbnails',
-      `${filename}-${width}x${height}.jpg`,
+      `${filename}-${width}x${height}.jpg`
     );
 
     // Check if resized image already exists
     if (fs.existsSync(outputPath)) {
-      return res.sendFile(outputPath);
+      res.sendFile(outputPath);
+      return;
     }
 
     // Check if original image exists
     if (!fs.existsSync(inputPath)) {
-      return res.status(404).json({
-        error: 'Image not found',
-      });
+      res.status(404).json({ error: 'Image not found' });
+      return;
     }
 
     // Resize and save image
@@ -65,9 +82,6 @@ export const processImage = async (req: Request, res: Response) => {
 
     res.sendFile(outputPath);
   } catch (error) {
-    console.error('Image processing error:', error);
-    res.status(500).json({
-      error: 'Error processing image',
-    });
+    next(error);
   }
 };

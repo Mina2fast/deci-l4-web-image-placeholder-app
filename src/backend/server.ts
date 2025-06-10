@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import apiRoutes from './routes/api.routes';
 import path from 'path';
+import apiRoutes from './routes/api.routes';
 
 const app = express();
 const PORT = 3000;
@@ -14,7 +14,12 @@ app.use(express.static(path.join(__dirname, '../../frontend/public')));
 // Routes
 app.use('/api', apiRoutes);
 
-// Start server
+// Error handling middleware
+app.use((err: Error, req: express.Request, res: express.Response) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

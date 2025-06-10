@@ -1,5 +1,7 @@
 import multer from 'multer';
 import path from 'path';
+import { Request } from 'express';
+import { FileFilterCallback } from 'multer';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -26,5 +28,15 @@ const upload = multer({
     fileSize: 5 * 1024 * 1024 // 5MB
   }
 });
+
+// ✅ This is the only addition — exporting the same logic separately
+export const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+  const ext = path.extname(file.originalname).toLowerCase();
+  if (['.jpg', '.jpeg', '.png'].includes(ext)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only JPG, JPEG and PNG images are allowed'));
+  }
+};
 
 export default upload;

@@ -12,7 +12,7 @@ describe('API Routes Integration Tests', () => {
     if (!fs.existsSync(testImagePath)) {
       fs.writeFileSync(testImagePath, 'test image content');
     }
-
+    
     // Ensure thumbnails directory exists
     if (!fs.existsSync(thumbnailsDir)) {
       fs.mkdirSync(thumbnailsDir, { recursive: true });
@@ -24,7 +24,7 @@ describe('API Routes Integration Tests', () => {
     if (fs.existsSync(testImagePath)) {
       fs.unlinkSync(testImagePath);
     }
-
+    
     const testThumbnail = path.join(thumbnailsDir, 'test-100x100.jpg');
     if (fs.existsSync(testThumbnail)) {
       fs.unlinkSync(testThumbnail);
@@ -65,8 +65,6 @@ describe('API Routes Integration Tests', () => {
       const response = await request(app).post('/api/upload');
       expect(response.status).toBe(400);
     });
-
-    // Additional tests for file upload would go here
   });
 
   describe('GET /api/images-list', () => {
