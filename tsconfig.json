@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES2020",
+    "module": "ESNext",
+    "rootDir": "src",
+    "outDir": "dist",
     "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@utils/*": ["src/backend/utilities/*"]
-    }
+    "lib": ["ES2020", "DOM"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "types": ["node", "jasmine"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "tests"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

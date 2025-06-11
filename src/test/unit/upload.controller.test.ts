@@ -3,7 +3,7 @@
 import request from 'supertest';
 import path from 'path';
 import fs from 'fs';
-import app from '../../src/backend/server'; 
+import app from '../../backend/server.js'; 
 
 describe('POST /api/images/upload', () => {
   const imagePath = path.join(__dirname, 'test-image.jpg');

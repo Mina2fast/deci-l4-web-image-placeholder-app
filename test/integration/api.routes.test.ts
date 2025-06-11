@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../../src/backend/server';
+import app from '../../src/backend/server.mts';
 import path from 'path';
 import fs from 'fs';
 
