@@ -1,14 +1,14 @@
-let selectedImage: string | null = null;
+let selectedImage = null;
 
 // DOM Elements
-const gallery = document.getElementById('gallery') as HTMLDivElement;
-const uploadForm = document.getElementById('uploadForm') as HTMLFormElement;
-const imageUpload = document.getElementById('imageUpload') as HTMLInputElement;
-const uploadMessage = document.getElementById('uploadMessage') as HTMLDivElement;
-const resizeForm = document.getElementById('resizeForm') as HTMLFormElement;
-const widthInput = document.getElementById('width') as HTMLInputElement;
-const heightInput = document.getElementById('height') as HTMLInputElement;
-const resizeResult = document.getElementById('resizeResult') as HTMLDivElement;
+const gallery = document.getElementById('gallery');
+const uploadForm = document.getElementById('uploadForm');
+const imageUpload = document.getElementById('imageUpload');
+const uploadMessage = document.getElementById('uploadMessage');
+const resizeForm = document.getElementById('resizeForm');
+const widthInput = document.getElementById('width');
+const heightInput = document.getElementById('height');
+const resizeResult = document.getElementById('resizeResult');
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Fetch all images from server
-async function fetchImages(): Promise<void> {
+async function fetchImages() {
   try {
     const response = await fetch('/api/images-list');
     if (!response.ok) throw new Error('Failed to fetch images');
-    
+
     const images = await response.json();
     renderGallery(images);
   } catch (error) {
@@ -30,9 +30,9 @@ async function fetchImages(): Promise<void> {
 }
 
 // Render image gallery
-function renderGallery(images: string[]): void {
+function renderGallery(images) {
   gallery.innerHTML = '';
-  
+
   if (images.length === 0) {
     gallery.innerHTML = '<p>No images found. Upload some images to get started!</p>';
     return;
@@ -43,7 +43,7 @@ function renderGallery(images: string[]): void {
     imgElement.src = `/images/${image}`;
     imgElement.alt = image;
     imgElement.dataset.filename = image;
-    
+
     imgElement.addEventListener('click', () => {
       document.querySelectorAll('#gallery img').forEach(img => {
         img.classList.remove('selected');
@@ -51,7 +51,7 @@ function renderGallery(images: string[]): void {
       imgElement.classList.add('selected');
       selectedImage = image;
     });
-    
+
     gallery.appendChild(imgElement);
   });
 }
@@ -59,26 +59,26 @@ function renderGallery(images: string[]): void {
 // Handle image upload
 uploadForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
-  if (!imageUpload.files?.length) {
+
+  if (!imageUpload.files || !imageUpload.files.length) {
     showError('Please select a file');
     return;
   }
-  
+
   const formData = new FormData();
   formData.append('image', imageUpload.files[0]);
-  
+
   try {
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
-    
+
     if (!response.ok) {
       const result = await response.json();
       throw new Error(result.error || 'Upload failed');
     }
-    
+
     uploadMessage.textContent = '';
     imageUpload.value = '';
     fetchImages(); // Refresh gallery
@@ -90,29 +90,28 @@ uploadForm.addEventListener('submit', async (e) => {
 // Handle image resize
 resizeForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   if (!selectedImage) {
     showError('Please select an image first');
     return;
   }
-  
+
   const width = widthInput.value;
   const height = heightInput.value;
-  
+
   if (!width || !height) {
     showError('Please enter both width and height');
     return;
   }
-  
+
   try {
     const url = `/api/images?filename=${encodeURIComponent(selectedImage)}&width=${width}&height=${height}`;
-    
-    // Test if the image can be processed
+
     const testResponse = await fetch(url);
     if (!testResponse.ok) {
       throw new Error(await testResponse.text());
     }
-    
+
     resizeResult.innerHTML = `
       <p>Image resized successfully!</p>
       <p>Access your image at: <a href="${url}" target="_blank">${url}</a></p>
@@ -123,7 +122,7 @@ resizeForm.addEventListener('submit', async (e) => {
   }
 });
 
-function showError(message: string): void {
+function showError(message) {
   const errorElement = uploadMessage || resizeResult;
   errorElement.textContent = message;
   errorElement.classList.add('error');

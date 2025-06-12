@@ -2,7 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
-
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 export const validateImageParams = (
   req: Request,
   res: Response,
@@ -53,12 +55,12 @@ export const processImage = async (
 
     const inputPath = path.join(
       __dirname,
-      '../../../frontend/public/images',
+      '../../frontend/public/images',
       filename as string
     );
     const outputPath = path.join(
       __dirname,
-      '../../../frontend/public/thumbnails',
+      '../../frontend/public/thumbnails',
       `${filename}-${width}x${height}.jpg`
     );
 
