@@ -4,6 +4,7 @@ import path from 'path';
 import apiRoutes from './routes/api.routes.mjs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { NextFunction } from 'express';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -21,7 +22,8 @@ app.use(express.static(path.join(__dirname, '../../frontend/public')));
 app.use('/api', apiRoutes);
 
 // Error handling middleware
-app.use((err: Error, req: express.Request, res: express.Response) => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: Error, req: express.Request, res: express.Response, _next: NextFunction) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
