@@ -1,7 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
-import apiRoutes from './routes/api.routes';
+import apiRoutes from './routes/api.routes.mjs';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 
 const app = express();
 const PORT = 3000;

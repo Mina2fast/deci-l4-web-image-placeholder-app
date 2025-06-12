@@ -1,4 +1,4 @@
-import { fileFilter } from '../../backend/utilities/image.util';
+import { fileFilter } from '../../backend/utilities/image.util.mjs';
 import { Request } from 'express';
 
 describe('fileFilter', () => {

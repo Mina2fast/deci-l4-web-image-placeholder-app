@@ -2,9 +2,9 @@ import { Router } from 'express';
 import {
   processImage,
   validateImageParams,
-} from '../controllers/image.controller';
-import { uploadImage, getImagesList } from '../controllers/upload.controller';
-import upload from '../utilities/image.util';
+} from '../controllers/image.controller.mjs';
+import { uploadImage, getImagesList } from '../controllers/upload.controller.mjs';
+import upload from '../utilities/image.util.mjs';
 
 const router = Router();
 
