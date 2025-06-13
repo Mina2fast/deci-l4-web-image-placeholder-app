@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run build && node dist/backend/server.mjs",
-    "build": "tsc && npm install --save-dev cpy-cli && npm run copy-frontend",
+    "build": "tsc && node copyFrontend.mjs",
     "copy-frontend": "cpy \"src/frontend/**/*\" dist/frontend --parents",
     "dev": "ts-node src/backend/server.mts",
     "test": "jasmine",
