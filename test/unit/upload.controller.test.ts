@@ -1,9 +1,9 @@
 // tests/upload.controller.test.ts
 
-import request from 'supertest';
-import path from 'path';
-import fs from 'fs';
-import app from '../../src/backend/server.mts'; 
+const request = require('supertest');
+const path = require('path');
+const fs = require('fs');
+const app = require('../../dist/backend/server.js').default; 
 
 describe('POST /api/images/upload', () => {
   const imagePath = path.join(__dirname, 'test-image.jpg');

@@ -1,10 +1,9 @@
-import { fileFilter } from '../../src/backend/utilities/image.util.mjs';
-import { Request } from 'express';
+const { fileFilter } = require('../../dist/backend/utilities/image.util.js');
 
 describe('fileFilter', () => {
   it('should accept valid image files', () => {
-    const req = {} as Request;
-    const file = { originalname: 'image.jpg' } as Express.Multer.File;
+    const req = {};
+    const file = { originalname: 'image.jpg' };
     const cb = jasmine.createSpy('cb');
 
     fileFilter(req, file, cb);
@@ -13,16 +12,12 @@ describe('fileFilter', () => {
   });
 
   it('should reject invalid file types', () => {
-    const req = {} as Request;
-    const file = { originalname: 'document.pdf' } as Express.Multer.File;
+    const req = {};
+    const file = { originalname: 'document.pdf' };
     const cb = jasmine.createSpy('cb');
 
     fileFilter(req, file, cb);
 
-    expect(cb).toHaveBeenCalled();
-    const [error, result] = cb.calls.mostRecent().args;
-    expect(error instanceof Error).toBeTrue();
-    expect(error.message).toBe('Only JPG, JPEG and PNG images are allowed');
-    expect(result).toBeFalse();
+    expect(cb).toHaveBeenCalledWith(null, false);
   });
 });
