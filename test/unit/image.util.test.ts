@@ -18,6 +18,7 @@ describe('fileFilter', () => {
 
     fileFilter(req, file, cb);
 
-    expect(cb).toHaveBeenCalledWith(null, false);
+    expect(cb.calls.mostRecent().args[0]).toEqual(jasmine.any(Error));
+    expect(cb.calls.mostRecent().args[0].message).toBe('Only JPG, JPEG and PNG images are allowed');
   });
 });

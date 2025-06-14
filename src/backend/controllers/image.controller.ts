@@ -3,11 +3,7 @@ import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
 
-export const validateImageParams = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+export const validateImageParams = (req: Request, res: Response, next: NextFunction): void => {
   const { filename, width, height } = req.query;
 
   if (!filename || !width || !height) {
@@ -34,7 +30,7 @@ export const validateImageParams = (
 export const processImage = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const { filename, width, height } = req.query;
@@ -45,7 +41,7 @@ export const processImage = async (
     const outputPath = path.join(
       __dirname,
       '../../frontend/public/thumbnails',
-      `${filename}-${width}x${height}.jpg`
+      `${filename}-${width}x${height}.jpg`,
     );
 
     if (fs.existsSync(outputPath)) {
@@ -58,10 +54,7 @@ export const processImage = async (
       return;
     }
 
-    await sharp(inputPath)
-      .resize(widthNum, heightNum)
-      .toFormat('jpeg')
-      .toFile(outputPath);
+    await sharp(inputPath).resize(widthNum, heightNum).toFormat('jpeg').toFile(outputPath);
 
     res.sendFile(outputPath);
   } catch (error) {

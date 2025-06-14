@@ -30,7 +30,7 @@ const getImagesList = async (_req, res, next) => {
                 next(new Error('Error reading images directory'));
                 return;
             }
-            const imageFiles = files.filter(file => file.toLowerCase().endsWith('.jpg') ||
+            const imageFiles = files.filter((file) => file.toLowerCase().endsWith('.jpg') ||
                 file.toLowerCase().endsWith('.jpeg') ||
                 file.toLowerCase().endsWith('.png'));
             res.json(imageFiles);

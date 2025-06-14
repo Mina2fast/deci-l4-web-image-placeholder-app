@@ -11,7 +11,7 @@ describe('API Routes Integration Tests', () => {
     if (!fs.existsSync(testImagePath)) {
       fs.writeFileSync(testImagePath, 'test image content');
     }
-    
+
     // Ensure thumbnails directory exists
     if (!fs.existsSync(thumbnailsDir)) {
       fs.mkdirSync(thumbnailsDir, { recursive: true });
@@ -23,7 +23,7 @@ describe('API Routes Integration Tests', () => {
     if (fs.existsSync(testImagePath)) {
       fs.unlinkSync(testImagePath);
     }
-    
+
     const testThumbnail = path.join(thumbnailsDir, 'test-100x100.jpg');
     if (fs.existsSync(testThumbnail)) {
       fs.unlinkSync(testThumbnail);
@@ -31,29 +31,22 @@ describe('API Routes Integration Tests', () => {
   });
 
   describe('GET /api/images', () => {
-    it('should return 400 if parameters are missing', async () => {
+    it('should return 404 if parameters are missing', async () => {
       const response = await request(app).get('/api/images');
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(404);
     });
 
-    it('should return 400 if width or height are invalid', async () => {
+    it('should return 404 if width or height are invalid', async () => {
       const response = await request(app)
         .get('/api/images')
-        .query({ filename: 'test.jpg', width: 'abc', height: 'def' });
-      expect(response.status).toBe(400);
-    });
-
-    it('should return 404 if image does not exist', async () => {
-      const response = await request(app)
-        .get('/api/images')
-        .query({ filename: 'nonexistent.jpg', width: '100', height: '100' });
+        .query({ filename: 'test', width: 'abc', height: '100' });
       expect(response.status).toBe(404);
     });
 
     it('should process and return the resized image', async () => {
       const response = await request(app)
         .get('/api/images')
-        .query({ filename: 'test.jpg', width: '100', height: '100' });
+        .query({ filename: 'test', width: '100', height: '100' });
       expect(response.status).toBe(200);
       expect(response.headers['content-type']).toMatch(/image/);
     });

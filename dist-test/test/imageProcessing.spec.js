@@ -16,10 +16,7 @@ describe('Image Processing Utility', () => {
             pending('No test.jpg found in images folder');
             return;
         }
-        await sharp(inputPath)
-            .resize(100, 100)
-            .toFormat('jpeg')
-            .toFile(outputPath);
+        await sharp(inputPath).resize(100, 100).toFormat('jpeg').toFile(outputPath);
         expect(fs.existsSync(outputPath)).toBeTrue();
     });
 });

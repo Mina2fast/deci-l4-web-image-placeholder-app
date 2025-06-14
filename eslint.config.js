@@ -3,6 +3,17 @@ const ts = require('@typescript-eslint/eslint-plugin');
 const tsParser = require('@typescript-eslint/parser');
 
 module.exports = [
+  {
+    ignores: [
+      'dist/',
+      'dist-test/',
+      '*.js',
+      '*.cjs',
+      '*.mjs',
+      'test/**/*.js',
+      'src/**/*.js'
+    ]
+  },
   js.configs.recommended,
   {
     files: ['src/**/*.ts'],

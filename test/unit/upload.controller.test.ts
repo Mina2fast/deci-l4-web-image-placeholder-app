@@ -33,7 +33,11 @@ describe('POST /api/images/upload', () => {
     expect(response.status).toBe(200);
     expect(response.body.resizedImagePath).toBeDefined();
 
-    const outputPath = path.join(__dirname, '../../../src/frontend/public', response.body.resizedImagePath);
+    const outputPath = path.join(
+      __dirname,
+      '../../../src/frontend/public',
+      response.body.resizedImagePath,
+    );
     expect(fs.existsSync(outputPath)).toBe(true);
   });
 

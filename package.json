@@ -9,7 +9,7 @@
     "build:test": "tsc --project tsconfig.test.json",
     "copy-frontend": "cpy \"src/frontend/**/*\" dist/frontend --parents",
     "dev": "ts-node src/backend/server.mts",
-    "test": "npm run build:test && jasmine",
+    "test": "npm run build:test && npx jasmine dist-test/test/**/*.spec.js dist-test/test/**/*.test.js",
     "lint": "eslint . --ext .ts,.js",
     "prettier": "prettier --write \"src/**/*.ts\" \"tests/**/*.ts\"",
     "prepare": "npm run build",

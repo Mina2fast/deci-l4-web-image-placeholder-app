@@ -7,7 +7,7 @@ const imagesDir = path.join(__dirname, '../../frontend/public/images');
 export const uploadImage = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     if (!req.file) {
@@ -26,7 +26,7 @@ export const uploadImage = async (
 export const getImagesList = async (
   _req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     fs.readdir(imagesDir, (err, files) => {
@@ -34,10 +34,11 @@ export const getImagesList = async (
         next(new Error('Error reading images directory'));
         return;
       }
-      const imageFiles = files.filter(file =>
-        file.toLowerCase().endsWith('.jpg') ||
-        file.toLowerCase().endsWith('.jpeg') ||
-        file.toLowerCase().endsWith('.png')
+      const imageFiles = files.filter(
+        (file) =>
+          file.toLowerCase().endsWith('.jpg') ||
+          file.toLowerCase().endsWith('.jpeg') ||
+          file.toLowerCase().endsWith('.png'),
       );
       res.json(imageFiles);
     });

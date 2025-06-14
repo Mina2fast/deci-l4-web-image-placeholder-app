@@ -41,10 +41,7 @@ const processImage = async (req, res, next) => {
             res.status(404).json({ error: 'Image not found' });
             return;
         }
-        await (0, sharp_1.default)(inputPath)
-            .resize(widthNum, heightNum)
-            .toFormat('jpeg')
-            .toFile(outputPath);
+        await (0, sharp_1.default)(inputPath).resize(widthNum, heightNum).toFormat('jpeg').toFile(outputPath);
         res.sendFile(outputPath);
     }
     catch (error) {
