@@ -1,11 +1,11 @@
-import request from 'supertest';
-// @ts-ignore
-import app from '../../dist-test/backend/server.js';
-import path from 'path';
-import fs from 'fs';
+"use strict";
 describe('API Routes Integration Tests', () => {
-    const testImagePath = path.join(__dirname, '../../src/frontend/public/images/test.jpg');
-    const thumbnailsDir = path.join(__dirname, '../../src/frontend/public/thumbnails');
+    const request = require('supertest');
+    const app = require('../../src/backend/server.js').default;
+    const path = require('path');
+    const fs = require('fs');
+    const testImagePath = path.join(__dirname, '../../../src/frontend/public/images/test.jpg');
+    const thumbnailsDir = path.join(__dirname, '../../../src/frontend/public/thumbnails');
     beforeAll(() => {
         // Create test image if it doesn't exist
         if (!fs.existsSync(testImagePath)) {

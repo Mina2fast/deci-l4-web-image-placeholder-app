@@ -1,6 +1,6 @@
-const { fileFilter } = require('../../dist/backend/utilities/image.util.js');
-
 describe('fileFilter', () => {
+  const { fileFilter } = require('../../src/backend/utilities/image.util.js');
+
   it('should accept valid image files', () => {
     const req = {};
     const file = { originalname: 'image.jpg' };

@@ -5,5 +5,8 @@
     "module": "CommonJS",
     "rootDir": "."
   },
-  "include": ["test/**/*.ts"]
+  "include": [
+    "test/**/*.ts",
+    "src/backend/**/*.ts"
+  ]
 }

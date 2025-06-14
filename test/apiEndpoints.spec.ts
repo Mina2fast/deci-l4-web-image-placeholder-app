@@ -1,7 +1,7 @@
-const supertest = require('supertest');
-const app = require('../dist/backend/server.js').default;
-
 describe('API Endpoint Tests', () => {
+  const supertest = require('supertest');
+  const app = require('../src/backend/server.js').default;
+
   it('GET /api/image should return 400 if missing params', async () => {
     const res = await supertest(app).get('/api/image');
     expect(res.status).toBe(400);

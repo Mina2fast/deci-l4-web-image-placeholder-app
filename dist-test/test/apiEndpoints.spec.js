@@ -1,7 +1,7 @@
-import supertest from 'supertest';
-// @ts-ignore
-import app from '../backend/server.js';
+"use strict";
 describe('API Endpoint Tests', () => {
+    const supertest = require('supertest');
+    const app = require('../src/backend/server.js').default;
     it('GET /api/image should return 400 if missing params', async () => {
         const res = await supertest(app).get('/api/image');
         expect(res.status).toBe(400);

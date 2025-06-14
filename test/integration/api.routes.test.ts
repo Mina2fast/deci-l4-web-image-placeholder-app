@@ -1,9 +1,8 @@
-const request = require('supertest');
-const app = require('../../dist/backend/server.js').default;
-const path = require('path');
-const fs = require('fs');
-
 describe('API Routes Integration Tests', () => {
+  const request = require('supertest');
+  const app = require('../../src/backend/server.js').default;
+  const path = require('path');
+  const fs = require('fs');
   const testImagePath = path.join(__dirname, '../../../src/frontend/public/images/test.jpg');
   const thumbnailsDir = path.join(__dirname, '../../../src/frontend/public/thumbnails');
 

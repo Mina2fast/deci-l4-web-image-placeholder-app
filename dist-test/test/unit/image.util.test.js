@@ -1,6 +1,6 @@
-// @ts-ignore
-import { fileFilter } from '../../dist-test/backend/utilities/image.util.js';
+"use strict";
 describe('fileFilter', () => {
+    const { fileFilter } = require('../../src/backend/utilities/image.util.js');
     it('should accept valid image files', () => {
         const req = {};
         const file = { originalname: 'image.jpg' };

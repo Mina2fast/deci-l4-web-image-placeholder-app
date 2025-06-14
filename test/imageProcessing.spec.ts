@@ -1,10 +1,9 @@
-const sharp = require('sharp');
-const path = require('path');
-const fs = require('fs');
-
 describe('Image Processing Utility', () => {
-  const inputPath = path.join(__dirname, '../../src/frontend/public/images/test.jpg');
-  const outputPath = path.join(__dirname, '../../src/frontend/public/thumbnails/test-100x100.jpg');
+  const sharp = require('sharp');
+  const path = require('path');
+  const fs = require('fs');
+  const inputPath = path.join(__dirname, '../../../src/frontend/public/images/test.jpg');
+  const outputPath = path.join(__dirname, '../../../src/frontend/public/thumbnails/test-100x100.jpg');
 
   afterAll(() => {
     if (fs.existsSync(outputPath)) {

@@ -1,13 +1,15 @@
 // tests/upload.controller.test.ts
 
-const request = require('supertest');
-const path = require('path');
-const fs = require('fs');
-const app = require('../../dist/backend/server.js').default; 
-
 describe('POST /api/images/upload', () => {
+  const request = require('supertest');
+  const path = require('path');
+  const fs = require('fs');
+  const app = require('../../src/backend/server.js').default;
   const imagePath = path.join(__dirname, 'test-image.jpg');
-  const resizedImagePath = path.join(__dirname, '../../public/images/resized/test-image-300x300.jpg');
+  const resizedImagePath = path.join(
+    __dirname,
+    '../../../src/frontend/public/images/resized/test-image-300x300.jpg',
+  );
 
   beforeAll(() => {
     if (!fs.existsSync(imagePath)) {
@@ -29,11 +31,9 @@ describe('POST /api/images/upload', () => {
       .attach('image', imagePath);
 
     expect(response.status).toBe(200);
-
-    // ✅ Use this if you're getting `toHaveProperty` errors in Jasmine:
     expect(response.body.resizedImagePath).toBeDefined();
 
-    const outputPath = path.join(__dirname, '../../public', response.body.resizedImagePath);
+    const outputPath = path.join(__dirname, '../../../src/frontend/public', response.body.resizedImagePath);
     expect(fs.existsSync(outputPath)).toBe(true);
   });
 
